@@ -29,10 +29,8 @@
     <style>
         ::-webkit-scrollbar { display: none; }
         * { -ms-overflow-style: none; scrollbar-width: none; box-sizing: border-box; }
-        
         body { transition: background-color 0.5s ease, color 0.5s ease; }
 
-        /* Glassmorphism */
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -45,7 +43,6 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* Ambient Neon Glows */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -63,7 +60,6 @@
             100% { transform: translate(5vw, 5vh) scale(1.1); }
         }
 
-        /* Grid Nodes */
         @keyframes popIn {
             0% { transform: scale(0); opacity: 0; }
             80% { transform: scale(1.2); opacity: 1; }
@@ -76,7 +72,6 @@
             transition: all 0.3s ease;
         }
         
-        /* Neon Elapsed / Remaining */
         .circle-elapsed {
             background: rgba(244, 63, 94, 0.9);
             box-shadow: 0 0 8px rgba(244, 63, 94, 0.6), inset 2px 2px 4px rgba(255,255,255,0.3);
@@ -106,276 +101,203 @@
     <div class="orb orb-2"></div>
 
     <div class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center px-2">
-        <div class="flex items-center space-x-2 px-4 py-2 rounded-full glass shadow-neo-light dark:shadow-neo-dark">
+        <div class="flex items-center space-x-2 px-4 py-2 rounded-full glass shadow-neo-light dark:shadow-neo-dark border border-white/10">
             <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]"></div>
-            <span id="live-clock" class="text-sm sm:text-base font-semibold tracking-wide opacity-90">Loading...</span>
+            <span id="live-clock" class="text-xs sm:text-sm font-semibold tracking-wide opacity-90 uppercase">Loading...</span>
+        </div>
+
+        <div class="hidden md:flex px-4 py-2 rounded-full glass shadow-neo-light dark:shadow-neo-dark border border-white/10">
+            <span class="text-xs font-bold uppercase tracking-widest opacity-70 mr-2">Total Remaining:</span>
+            <span id="top-days-rem" class="text-xs font-bold text-sky-500">0 Days</span>
         </div>
 
         <button id="theme-toggle" class="w-10 h-10 rounded-full shadow-neo-light dark:shadow-neo-dark flex items-center justify-center transition-all hover:scale-105 active:shadow-neo-light-inner dark:active:shadow-neo-dark-inner bg-neo-light dark:bg-neo-dark border border-white/20 dark:border-white/5">
-            <svg id="moon-icon" class="w-5 h-5 hidden dark:block text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.5)]" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-            <svg id="sun-icon" class="w-5 h-5 block dark:hidden text-orange-500 drop-shadow-[0_0_5px_rgba(249,115,22,0.5)]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 2.32a1 1 0 011.415 0l.707.707a1 1 0 01-1.414 1.415l-.707-.707a1 1 0 010-1.415zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-4.22 4.22a1 1 0 010 1.415l-.707.707a1 1 0 01-1.415-1.414l.707-.707a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-2.32a1 1 0 01-1.415 0l-.707-.707a1 1 0 011.414-1.415l.707.707a1 1 0 010 1.415zM2 10a1 1 0 011-1h1a1 1 0 110 2H3a1 1 0 01-1-1zm2.32-4.22a1 1 0 010-1.415l.707-.707a1 1 0 011.415 1.414L4.93 5.05A1 1 0 014.32 5.78zM10 5a5 5 0 100 10 5 5 0 000-10z" clip-rule="evenodd"></path></svg>
+            <svg id="moon-icon" class="w-5 h-5 hidden dark:block text-yellow-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="sun-icon" class="w-5 h-5 block dark:hidden text-orange-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 4.32a1 1 0 011.415 0l.707.707a1 1 0 01-1.414 1.415l-.707-.707a1 1 0 010-1.415zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-4.22 4.22a1 1 0 010 1.415l-.707.707a1 1 0 01-1.415-1.414l.707-.707a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-2.32a1 1 0 01-1.415 0l-.707-.707a1 1 0 011.414-1.415l.707.707a1 1 0 010 1.415zM2 10a1 1 0 011-1h1a1 1 0 110 2H3a1 1 0 01-1-1zm2.32-4.22a1 1 0 010-1.415l.707-.707a1 1 0 011.415 1.414L4.93 5.05A1 1 0 014.32 5.78zM10 5a5 5 0 100 10 5 5 0 000-10z"></path></svg>
         </button>
     </div>
 
     <div class="glass flex-1 w-full max-w-7xl flex flex-col rounded-[2.5rem] p-4 sm:p-6 shadow-2xl z-10 relative h-full mt-14 sm:mt-16">
         
         <div class="text-center mb-3 sm:mb-4 flex flex-col items-center shrink-0">
-            <div class="flex gap-1 sm:gap-3 md:gap-5 lg:gap-8 justify-center items-end text-shadow-neon font-mono-space tracking-wider">
-                <div class="flex flex-col items-center"><span id="cd-mo" class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-xs sm:text-sm tracking-widest uppercase opacity-70">Months</span></div><span class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
-                <div class="flex flex-col items-center"><span id="cd-wk" class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-xs sm:text-sm tracking-widest uppercase opacity-70">Weeks</span></div><span class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
-                <div class="flex flex-col items-center"><span id="cd-dy" class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-xs sm:text-sm tracking-widest uppercase opacity-70">Days</span></div><span class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
-                <div class="flex flex-col items-center"><span id="cd-hr" class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-xs sm:text-sm tracking-widest uppercase opacity-70">Hrs</span></div><span class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
-                <div class="flex flex-col items-center"><span id="cd-mi" class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-xs sm:text-sm tracking-widest uppercase opacity-70">Mins</span></div><span class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
-                <div class="flex flex-col items-center"><span id="cd-sc" class="text-3xl sm:text-5xl md:text-5xl lg:text-6xl font-bold text-sky-500 dark:text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">00</span><span class="text-xs sm:text-sm tracking-widest uppercase opacity-70">Secs</span></div>
+            <div class="flex gap-1 sm:gap-3 md:gap-5 lg:gap-8 justify-center items-end font-mono-space tracking-wider">
+                <div class="flex flex-col items-center"><span id="cd-mo" class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-[0.6rem] sm:text-xs tracking-widest uppercase opacity-70">Months</span></div><span class="text-xl sm:text-3xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
+                <div class="flex flex-col items-center"><span id="cd-wk" class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-[0.6rem] sm:text-xs tracking-widest uppercase opacity-70">Weeks</span></div><span class="text-xl sm:text-3xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
+                <div class="flex flex-col items-center"><span id="cd-dy" class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-[0.6rem] sm:text-xs tracking-widest uppercase opacity-70">Days</span></div><span class="text-xl sm:text-3xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
+                <div class="flex flex-col items-center"><span id="cd-hr" class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-[0.6rem] sm:text-xs tracking-widest uppercase opacity-70">Hrs</span></div><span class="text-xl sm:text-3xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
+                <div class="flex flex-col items-center"><span id="cd-mi" class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold">00</span><span class="text-[0.6rem] sm:text-xs tracking-widest uppercase opacity-70">Mins</span></div><span class="text-xl sm:text-3xl md:text-5xl lg:text-6xl opacity-40 font-bold -translate-y-4 sm:-translate-y-5 lg:-translate-y-6">:</span>
+                <div class="flex flex-col items-center"><span id="cd-sc" class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-sky-500">00</span><span class="text-[0.6rem] sm:text-xs tracking-widest uppercase opacity-70">Secs</span></div>
             </div>
 
-            <div id="unit-indicator" class="mt-4 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-[0.65rem] sm:text-xs font-semibold tracking-wider border border-white/10 shadow-inner">
-                Initializing Matrix...
+            <div id="unit-indicator" class="mt-4 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-[0.65rem] sm:text-xs font-semibold tracking-wider border border-white/10 shadow-inner uppercase">
+                Initializing System...
             </div>
         </div>
 
         <div class="flex-1 w-full bg-slate-900/5 dark:bg-black/20 rounded-2xl shadow-neo-light-inner dark:shadow-neo-dark-inner p-2 sm:p-4 overflow-hidden relative border border-transparent dark:border-white/5 flex flex-col">
-            <div id="grid-canvas" class="flex-1 w-full h-full flex flex-wrap justify-center content-start gap-[2px] sm:gap-1">
-                </div>
+            <div id="grid-canvas" class="flex-1 w-full h-full flex flex-wrap justify-center content-start gap-[2px] sm:gap-1"></div>
         </div>
 
-        <div class="mt-3 sm:mt-4 shrink-0 px-6 py-3 sm:py-4 rounded-xl glass border-t border-white/20 dark:border-white/10 flex items-center justify-between">
+        <div class="mt-3 sm:mt-4 shrink-0 px-6 py-3 sm:py-4 rounded-xl glass border-t border-white/20 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <svg class="w-5 h-5 text-fuchsia-500 drop-shadow-[0_0_5px_rgba(217,70,239,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span class="text-xs sm:text-sm font-semibold tracking-widest uppercase opacity-80">Remaining Work Yield:</span>
+                <svg class="w-5 h-5 text-fuchsia-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-xs sm:text-sm font-semibold tracking-widest uppercase opacity-80">Timeline Summary:</span>
             </div>
-            <div class="text-sm sm:text-lg font-mono-space font-bold tracking-widest text-fuchsia-500 dark:text-fuchsia-400 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]">
-                <span id="work-hours-val">0 DAYS / 0 HRS</span>
+            
+            <div class="flex items-center gap-6">
+                <div class="flex flex-col items-end">
+                    <span class="text-[0.6rem] uppercase tracking-tighter opacity-50 font-bold">Remaining Days</span>
+                    <span id="footer-days-val" class="text-sm sm:text-lg font-mono-space font-bold text-sky-500">0</span>
+                </div>
+                <div class="w-[1px] h-8 bg-white/10"></div>
+                <div class="flex flex-col items-end">
+                    <span class="text-[0.6rem] uppercase tracking-tighter opacity-50 font-bold">Working Hours (9h/d)</span>
+                    <span id="work-hours-val" class="text-sm sm:text-lg font-mono-space font-bold text-fuchsia-500">0</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <button id="fab-btn" class="absolute bottom-6 right-6 z-30 w-14 h-14 rounded-full bg-neo-light dark:bg-neo-dark shadow-neo-light dark:shadow-neo-dark flex items-center justify-center text-sky-500 dark:text-sky-400 hover:scale-110 active:shadow-neo-light-inner dark:active:shadow-neo-dark-inner transition-transform duration-300 group border border-white/10">
-        <svg class="w-6 h-6 transform group-hover:rotate-90 transition-transform duration-300 drop-shadow-[0_0_5px_currentColor]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+    <button id="fab-btn" class="absolute bottom-6 right-6 z-30 w-14 h-14 rounded-full bg-neo-light dark:bg-neo-dark shadow-neo-light dark:shadow-neo-dark flex items-center justify-center text-sky-500 hover:scale-110 active:shadow-neo-light-inner dark:active:shadow-neo-dark-inner transition-transform duration-300 border border-white/10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
     </button>
 
     <div id="setup-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" id="modal-backdrop"></div>
-        
-        <div class="glass relative w-[90%] max-w-md rounded-[2rem] p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col gap-6 border-t border-l border-white/40 dark:border-white/10" id="modal-content">
-            <h2 class="text-2xl font-bold text-center tracking-wide drop-shadow-md">Matrix Params</h2>
-            
+        <div class="glass relative w-[90%] max-w-md rounded-[2rem] p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col gap-6 border border-white/20" id="modal-content">
+            <h2 class="text-xl font-bold text-center tracking-widest uppercase">System Parameters</h2>
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
-                    <label class="text-xs font-semibold opacity-80 pl-2 uppercase tracking-widest">Start Epoch</label>
-                    <input type="datetime-local" id="input-start" class="w-full p-3 rounded-xl bg-neo-light dark:bg-neo-dark shadow-neo-light-inner dark:shadow-neo-dark-inner border-none outline-none focus:ring-2 focus:ring-sky-400 transition-shadow text-sm font-mono-space">
+                    <label class="text-[0.65rem] font-bold opacity-60 uppercase tracking-widest ml-2">Start Boundary</label>
+                    <input type="datetime-local" id="input-start" class="w-full p-3 rounded-xl bg-neo-light dark:bg-neo-dark shadow-neo-light-inner dark:shadow-neo-dark-inner border-none outline-none text-sm font-mono-space">
                 </div>
-                
                 <div class="flex flex-col gap-1">
-                    <label class="text-xs font-semibold opacity-80 pl-2 uppercase tracking-widest">End Epoch</label>
-                    <input type="datetime-local" id="input-end" class="w-full p-3 rounded-xl bg-neo-light dark:bg-neo-dark shadow-neo-light-inner dark:shadow-neo-dark-inner border-none outline-none focus:ring-2 focus:ring-fuchsia-400 transition-shadow text-sm font-mono-space">
+                    <label class="text-[0.65rem] font-bold opacity-60 uppercase tracking-widest ml-2">End Boundary</label>
+                    <input type="datetime-local" id="input-end" class="w-full p-3 rounded-xl bg-neo-light dark:bg-neo-dark shadow-neo-light-inner dark:shadow-neo-dark-inner border-none outline-none text-sm font-mono-space">
                 </div>
             </div>
-
             <div class="flex gap-4 mt-2">
-                <button id="btn-generate" class="flex-1 py-3 rounded-xl font-bold text-sm bg-neo-light dark:bg-neo-dark shadow-neo-light dark:shadow-neo-dark hover:scale-105 active:shadow-neo-light-inner dark:active:shadow-neo-dark-inner transition-all text-sky-600 dark:text-sky-400">
-                    Inject Local
-                </button>
-                <button id="btn-copy" class="flex-1 py-3 rounded-xl font-bold text-sm bg-neo-light dark:bg-neo-dark shadow-neo-light dark:shadow-neo-dark hover:scale-105 active:shadow-neo-light-inner dark:active:shadow-neo-dark-inner transition-all text-fuchsia-600 dark:text-fuchsia-400">
-                    Copy Permlink
-                </button>
+                <button id="btn-generate" class="flex-1 py-3 rounded-xl font-bold text-xs uppercase bg-neo-light dark:bg-neo-dark shadow-neo-light dark:shadow-neo-dark hover:scale-105 active:shadow-neo-light-inner text-sky-600 dark:text-sky-400">Initialize</button>
+                <button id="btn-copy" class="flex-1 py-3 rounded-xl font-bold text-xs uppercase bg-neo-light dark:bg-neo-dark shadow-neo-light dark:shadow-neo-dark hover:scale-105 active:shadow-neo-light-inner text-fuchsia-600 dark:text-fuchsia-400">Export Link</button>
             </div>
-            
-            <p id="copy-toast" class="text-center text-xs font-bold text-fuchsia-500 opacity-0 transition-opacity">URL copied to clipboard.</p>
+            <p id="copy-toast" class="text-center text-[0.65rem] font-bold text-fuchsia-500 opacity-0 transition-opacity">Parameters copied to clipboard.</p>
         </div>
     </div>
 
     <script>
-        // DOM Nodes
         const liveClockEl = document.getElementById('live-clock');
         const themeToggle = document.getElementById('theme-toggle');
         const htmlElement = document.documentElement;
         const gridCanvas = document.getElementById('grid-canvas');
         const unitIndicator = document.getElementById('unit-indicator');
         const workHoursVal = document.getElementById('work-hours-val');
+        const footerDaysVal = document.getElementById('footer-days-val');
+        const topDaysRem = document.getElementById('top-days-rem');
         
-        // Timer Nodes
-        const elMo = document.getElementById('cd-mo');
-        const elWk = document.getElementById('cd-wk');
-        const elDy = document.getElementById('cd-dy');
-        const elHr = document.getElementById('cd-hr');
-        const elMi = document.getElementById('cd-mi');
-        const elSc = document.getElementById('cd-sc');
+        const elMo = document.getElementById('cd-mo'), elWk = document.getElementById('cd-wk'), 
+              elDy = document.getElementById('cd-dy'), elHr = document.getElementById('cd-hr'), 
+              elMi = document.getElementById('cd-mi'), elSc = document.getElementById('cd-sc');
 
-        // Modal Form Nodes
-        const fabBtn = document.getElementById('fab-btn');
-        const setupModal = document.getElementById('setup-modal');
-        const modalBackdrop = document.getElementById('modal-backdrop');
-        const inputStart = document.getElementById('input-start');
-        const inputEnd = document.getElementById('input-end');
-        const btnGenerate = document.getElementById('btn-generate');
-        const btnCopy = document.getElementById('btn-copy');
-        const copyToast = document.getElementById('copy-toast');
+        const fabBtn = document.getElementById('fab-btn'), setupModal = document.getElementById('setup-modal'), 
+              modalBackdrop = document.getElementById('modal-backdrop'), inputStart = document.getElementById('input-start'), 
+              inputEnd = document.getElementById('input-end'), btnGenerate = document.getElementById('btn-generate'), 
+              btnCopy = document.getElementById('btn-copy'), copyToast = document.getElementById('copy-toast');
 
-        // System State
-        let startDate = null;
-        let endDate = null;
-        let totalEntities = 0;
-        let elapsedEntities = 0;
-        let mainLoop = null;
+        let startDate = null, endDate = null, totalEntities = 0, elapsedEntities = 0, mainLoop = null;
 
-        // Configuration Maths
-        const MS_SEC = 1000;
-        const MS_MIN = MS_SEC * 60;
-        const MS_HR = MS_MIN * 60;
-        const MS_DAY = MS_HR * 24;
-        const MS_WK = MS_DAY * 7;
-        const MS_MO = MS_DAY * 30.4375;
+        const MS_SEC = 1000, MS_MIN = 60000, MS_HR = 3600000, MS_DAY = 86400000, MS_WK = 604800000, MS_MO = 2629800000;
 
-        // Theme Switch
         themeToggle.addEventListener('click', () => { htmlElement.classList.toggle('dark'); });
 
-        // --- Timezone Helper ---
-        function getNow() {
-            const params = new URLSearchParams(window.location.search);
-            const city = params.get('city');
-            if (city) {
-                try {
-                    const tzString = new Date().toLocaleString('en-US', { timeZone: decodeURIComponent(city) });
-                    return new Date(tzString);
-                } catch(e) { }
-            }
-            return new Date();
-        }
-
-        // --- Clock Routine ---
         function updateLiveClock() {
-            const params = new URLSearchParams(window.location.search);
-            const city = params.get('city');
             const now = new Date();
-            const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', second:'2-digit' };
-            if (city) {
-                try { options.timeZone = decodeURIComponent(city); } catch(e){}
-            }
-            liveClockEl.innerText = now.toLocaleDateString('en-US', options);
+            liveClockEl.innerText = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', second:'2-digit' });
         }
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
 
-        // --- Date Handlers ---
         function parseDateParam(str) {
             if (!str) return null;
-            const parts = str.split('-');
-            if (parts.length !== 5) return null;
-            return new Date(parts[2], parts[1]-1, parts[0], parts[3], parts[4]);
+            const p = str.split('-');
+            return p.length === 5 ? new Date(p[2], p[1]-1, p[0], p[3], p[4]) : null;
         }
+
         function formatDateToParam(d) {
             const p = n => n.toString().padStart(2, '0');
             return `${p(d.getDate())}-${p(d.getMonth()+1)}-${d.getFullYear()}-${p(d.getHours())}-${p(d.getMinutes())}`;
         }
-        function formatDateForInput(d) {
-            const p = n => n.toString().padStart(2, '0');
-            return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
-        }
 
-        // --- Bootstrapper ---
         function initializeApp() {
             const params = new URLSearchParams(window.location.search);
             startDate = parseDateParam(params.get('a'));
             endDate = parseDateParam(params.get('b'));
 
-            const now = getNow();
             if (!startDate || isNaN(startDate) || !endDate || isNaN(endDate)) {
-                startDate = new Date(now.getFullYear(), 0, 1, 0, 0); // Default to start of current year
-                endDate = new Date(now.getFullYear(), 11, 31, 23, 59); // Default to end of current year
+                startDate = new Date(new Date().getFullYear(), 0, 1);
+                endDate = new Date(new Date().getFullYear(), 11, 31, 23, 59);
             }
 
-            inputStart.value = formatDateForInput(startDate);
-            inputEnd.value = formatDateForInput(endDate);
+            inputStart.value = startDate.toISOString().slice(0, 16);
+            inputEnd.value = endDate.toISOString().slice(0, 16);
 
             runEngine();
-            buildMatrix();
+            buildDataGrid();
         }
 
-        // --- Main Computation Engine ---
         function runEngine() {
             if (mainLoop) clearInterval(mainLoop);
-
             const tick = () => {
-                const now = getNow();
-                let msDiff = endDate - now;
-                if (msDiff < 0) msDiff = 0;
+                const now = new Date();
+                let diff = Math.max(0, endDate - now);
 
-                // Time String Builder
                 const pad = n => n.toString().padStart(2, '0');
+                let r = diff;
+                const mo = Math.floor(r / MS_MO); r %= MS_MO;
+                const wk = Math.floor(r / MS_WK); r %= MS_WK;
+                const dy = Math.floor(r / MS_DAY); r %= MS_DAY;
+                const hr = Math.floor(r / MS_HR); r %= MS_HR;
+                const mi = Math.floor(r / MS_MIN); r %= MS_MIN;
+                const sc = Math.floor(r / MS_SEC);
+
+                elMo.innerText = pad(mo); elWk.innerText = pad(wk); elDy.innerText = pad(dy);
+                elHr.innerText = pad(hr); elMi.innerText = pad(mi); elSc.innerText = pad(sc);
+
+                const totalDaysLeft = diff / MS_DAY;
+                const roundedDays = Math.floor(totalDaysLeft);
                 
-                let rem = msDiff;
-                const mo = Math.floor(rem / MS_MO); rem %= MS_MO;
-                const wk = Math.floor(rem / MS_WK); rem %= MS_WK;
-                const dy = Math.floor(rem / MS_DAY); rem %= MS_DAY;
-                const hr = Math.floor(rem / MS_HR); rem %= MS_HR;
-                const mi = Math.floor(rem / MS_MIN); rem %= MS_MIN;
-                const sc = Math.floor(rem / MS_SEC);
+                topDaysRem.innerText = `${roundedDays} Days`;
+                footerDaysVal.innerText = roundedDays.toLocaleString();
+                workHoursVal.innerText = (roundedDays * 9).toLocaleString();
 
-                elMo.innerText = pad(mo);
-                elWk.innerText = pad(wk);
-                elDy.innerText = pad(dy);
-                elHr.innerText = pad(hr);
-                elMi.innerText = pad(mi);
-                elSc.innerText = pad(sc);
-
-                // Work Yield Calculator (9 hours per full remaining day in entire duration)
-                const totalDaysLeft = msDiff / MS_DAY;
-                const estWorkHrs = Math.max(0, Math.floor(totalDaysLeft) * 9);
-                workHoursVal.innerText = `${Math.floor(totalDaysLeft)} DAYS / ${estWorkHrs.toLocaleString()} HRS`;
-
-                syncMatrixState(now);
+                syncState(now);
             };
-
             tick();
             mainLoop = setInterval(tick, 1000);
         }
 
-        // --- Matrix (Grid) Logic ---
-        let matrixUnitStr = 'Days';
-        let msPerUnit = MS_DAY;
+        let unitStr = 'Days', msUnit = MS_DAY;
 
-        function buildMatrix() {
+        function buildDataGrid() {
             const totalMs = endDate - startDate;
-            if (totalMs <= 0) {
-                totalEntities = 0; elapsedEntities = 0;
-                renderNodes(); return;
-            }
+            if (totalMs <= 0) return renderNodes();
 
             const totalDays = totalMs / MS_DAY;
+            if (totalDays <= 31) { unitStr = 'Days'; msUnit = MS_DAY; totalEntities = Math.ceil(totalDays); }
+            else if (totalDays <= 365) { unitStr = 'Weeks'; msUnit = MS_WK; totalEntities = Math.ceil(totalDays / 7); }
+            else { unitStr = 'Months'; msUnit = MS_MO; totalEntities = Math.ceil(totalDays / 30.4375); }
 
-            if (totalDays <= 30) {
-                matrixUnitStr = 'Days';
-                msPerUnit = MS_DAY;
-                totalEntities = Math.ceil(totalDays);
-            } else if (totalDays <= 365) {
-                matrixUnitStr = 'Weeks';
-                msPerUnit = MS_WK;
-                totalEntities = Math.ceil(totalDays / 7);
-            } else {
-                matrixUnitStr = 'Months';
-                msPerUnit = MS_MO;
-                totalEntities = Math.ceil(totalDays / 30.4375);
-            }
-
-            unitIndicator.innerHTML = `<span class="opacity-70">Grid Scale:</span> <span class="text-sky-400">1 Node = 1 ${matrixUnitStr.slice(0,-1)}</span> <span class="mx-2 opacity-50">|</span> <span class="opacity-70">Total nodes:</span> <span class="text-fuchsia-400">${totalEntities}</span>`;
+            unitIndicator.innerHTML = `<span class="opacity-50">Scale:</span> 1 Node / ${unitStr.slice(0,-1)} <span class="mx-3 opacity-20">|</span> <span class="opacity-50">Capacity:</span> ${totalEntities} Units`;
             
-            calcElapsedState(getNow());
+            elapsedEntities = Math.floor(Math.max(0, new Date() - startDate) / msUnit);
             renderNodes();
         }
 
-        function calcElapsedState(now) {
-            let elapsedMs = now - startDate;
-            if (elapsedMs < 0) elapsedMs = 0;
-            if (elapsedMs > (endDate - startDate)) elapsedMs = endDate - startDate;
-            elapsedEntities = Math.floor(elapsedMs / msPerUnit);
-            if (elapsedEntities > totalEntities) elapsedEntities = totalEntities;
-        }
-
-        function syncMatrixState(now) {
-            const prev = elapsedEntities;
-            calcElapsedState(now);
-            if(prev !== elapsedEntities) renderNodes();
+        function syncState(now) {
+            const currentElapsed = Math.floor(Math.max(0, now - startDate) / msUnit);
+            if(currentElapsed !== elapsedEntities) {
+                elapsedEntities = Math.min(currentElapsed, totalEntities);
+                renderNodes();
+            }
         }
 
         function renderNodes() {
@@ -383,97 +305,53 @@
             if (totalEntities <= 0) return;
 
             const rect = gridCanvas.getBoundingClientRect();
-            // Gap adjustment for smaller sizes
-            const gap = window.innerWidth < 640 || window.innerHeight < 700 ? 1 : 4; 
-            
-            let minSize = 1; // Allows circles to get much smaller vertically
-            let maxSize = Math.max(rect.width, rect.height);
-            let targetSize = minSize;
+            const gap = window.innerWidth < 640 ? 2 : 4;
+            let min = 2, max = Math.max(rect.width, rect.height), best = 2;
 
-            // Algorithm to fit N nodes perfectly into available rect space without overflow
-            while (minSize <= maxSize) {
-                let mid = Math.floor((minSize + maxSize) / 2);
-                let cols = Math.floor((rect.width + gap) / (mid + gap));
-                let rows = Math.floor((rect.height + gap) / (mid + gap));
-                
-                if (cols * rows >= totalEntities) {
-                    targetSize = mid;
-                    minSize = mid + 1; 
-                } else {
-                    maxSize = mid - 1; 
-                }
+            while (min <= max) {
+                let mid = Math.floor((min + max) / 2);
+                if (Math.floor((rect.width + gap) / (mid + gap)) * Math.floor((rect.height + gap) / (mid + gap)) >= totalEntities) {
+                    best = mid; min = mid + 1;
+                } else max = mid - 1;
             }
-            const size = Math.max(targetSize - 1, 1); 
+            const size = Math.max(best - 1, 2);
 
             const frag = document.createDocumentFragment();
             for (let i = 0; i < totalEntities; i++) {
                 const node = document.createElement('div');
-                node.style.width = `${size}px`;
-                node.style.height = `${size}px`;
+                node.style.width = node.style.height = `${size}px`;
                 node.className = `circle-node ${i < elapsedEntities ? 'circle-elapsed' : 'circle-remaining'}`;
-                node.style.animationDelay = `${(i % 50) * 0.015}s`;
                 frag.appendChild(node);
             }
             gridCanvas.appendChild(frag);
         }
 
-        let rsTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(rsTimer);
-            rsTimer = setTimeout(() => { renderNodes(); }, 150);
-        });
-
-        // --- UI Modal Flow ---
-        function toggleUI(show) {
-            if (show) {
-                setupModal.classList.remove('hidden');
-                setTimeout(() => document.getElementById('modal-content').classList.replace('scale-95', 'scale-100'), 10);
-            } else {
-                document.getElementById('modal-content').classList.replace('scale-100', 'scale-95');
-                setTimeout(() => setupModal.classList.add('hidden'), 300);
-            }
+        function toggleUI(s) {
+            if (s) { setupModal.classList.remove('hidden'); setTimeout(() => document.getElementById('modal-content').classList.replace('scale-95', 'scale-100'), 10); }
+            else { document.getElementById('modal-content').classList.replace('scale-100', 'scale-95'); setTimeout(() => setupModal.classList.add('hidden'), 300); }
         }
 
         fabBtn.addEventListener('click', () => toggleUI(true));
         modalBackdrop.addEventListener('click', () => toggleUI(false));
 
-        function extractURL() {
-            const st = new Date(inputStart.value);
-            const en = new Date(inputEnd.value);
-            if (isNaN(st) || isNaN(en)) return null;
-
-            const url = new URL(window.location.origin + window.location.pathname);
-            url.searchParams.set('a', formatDateToParam(st));
-            url.searchParams.set('b', formatDateToParam(en));
-            
-            // Persist the city parameter if it exists
-            const params = new URLSearchParams(window.location.search);
-            const city = params.get('city');
-            if (city) url.searchParams.set('city', city);
-
-            return url.toString();
-        }
-
         btnGenerate.addEventListener('click', () => {
-            const url = extractURL();
-            if(url) {
-                window.history.pushState({}, '', url);
-                initializeApp();
-                toggleUI(false);
-            }
+            const url = new URL(window.location.origin + window.location.pathname);
+            url.searchParams.set('a', formatDateToParam(new Date(inputStart.value)));
+            url.searchParams.set('b', formatDateToParam(new Date(inputEnd.value)));
+            window.location.search = url.searchParams.toString();
         });
 
         btnCopy.addEventListener('click', () => {
-            const url = extractURL();
-            if(url) {
-                navigator.clipboard.writeText(url).then(() => {
-                    copyToast.classList.replace('opacity-0', 'opacity-100');
-                    setTimeout(() => copyToast.classList.replace('opacity-100', 'opacity-0'), 2000);
-                });
-            }
+            const url = new URL(window.location.origin + window.location.pathname);
+            url.searchParams.set('a', formatDateToParam(new Date(inputStart.value)));
+            url.searchParams.set('b', formatDateToParam(new Date(inputEnd.value)));
+            navigator.clipboard.writeText(url.toString()).then(() => {
+                copyToast.classList.replace('opacity-0', 'opacity-100');
+                setTimeout(() => copyToast.classList.replace('opacity-100', 'opacity-0'), 2000);
+            });
         });
 
-        // Ignite
+        window.addEventListener('resize', renderNodes);
         initializeApp();
     </script>
 </body>
